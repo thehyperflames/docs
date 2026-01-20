@@ -1,0 +1,16 @@
+---
+title: "Architecture"
+description: "High-level overview of the Hyperion Aggregator stack."
+---
+
+# System Architecture
+
+## Overview
+
+[Content placeholder: Diagram of Client -> API -> Aggregator -> Solana]
+
+## Components
+
+1.  **API Server**: Handles requests, quotes, and session management.
+2.  **Aggregator Engine**: Off-chain pathfinding using Hyperion's smart routing algorithm to split trades across DEXes like Vortex, Raydium, and Orca.
+3.  **Smart Contract**: On-chain verification and settlement.

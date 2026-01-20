@@ -1,0 +1,22 @@
+---
+title: "Sessions"
+description: "Sign once, trade forever. The core of Hyperion's UX."
+---
+
+# The Session Model
+
+Hyperion introduces a paradigm shift in Solana DeFi: **Session Keys**.
+
+Instead of signing every single transaction with your main wallet (which is slow, insecure, and annoying), you create a **Session**.
+
+## How it works
+
+1.  **Create**: You derive a temporary, scope-limited keypair (the "Session Key").
+2.  **Delegate**: Your main wallet approves this Session Key to spend a specific amount of tokens (e.g., "Max 10 SOL, 500 USDC") for a specific duration (e.g., "1 hour").
+3.  **Trade**: The Session Key signs the swap transactions. Because the private key is held in memory (or by your bot), these allow for **zero-latency** execution.
+
+## Security
+
+*   **Non-Custodial**: Your main private key never leaves your wallet.
+*   **Scoped**: The session key cannot drain your wallet. It can only spend what you allocated.
+*   **Revocable**: You can revoke the session at any time on-chain.

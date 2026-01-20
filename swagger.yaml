@@ -1,0 +1,1546 @@
+definitions:
+  big.Int:
+    type: object
+  github_com_thehyperflames_hyperion-api_internal_aggregator.GlobalStats:
+    properties:
+      active_users:
+        type: integer
+      pool_count:
+        type: integer
+      supported_tokens:
+        type: integer
+      total_swaps:
+        type: integer
+      total_volume_usd:
+        type: number
+      tvl_available_usd:
+        type: number
+    type: object
+  github_com_thehyperflames_hyperion-api_internal_aggregator.MultiHopSwapResponse:
+    properties:
+      amountIn:
+        description: AmountIn is the input token amount
+        type: string
+      amountOut:
+        description: AmountOut is the output token amount
+        type: string
+      computeUnitsEstimate:
+        description: ComputeUnitsEstimate is the estimated compute units needed
+        type: integer
+      feeAmount:
+        description: FeeAmount is the swap fee
+        type: string
+      hopCount:
+        description: HopCount is the number of swaps in the route
+        type: integer
+      lastValidBlockHeight:
+        description: LastValidBlockHeight is when the blockhash expires
+        type: integer
+      maxAmountIn:
+        description: MaxAmountIn is the maximum input (for ExactOut with slippage
+          applied)
+        type: string
+      minAmountOut:
+        description: MinAmountOut is the minimum output (for ExactIn with slippage
+          applied)
+        type: string
+      poolAddress:
+        description: PoolAddress is the pool used for the swap
+        type: string
+      pools:
+        description: Pools is the list of pools used
+        items:
+          type: string
+        type: array
+      route:
+        description: Route is the token path taken
+        items:
+          type: string
+        type: array
+      simulation:
+        allOf:
+        - $ref: '#/definitions/github_com_thehyperflames_hyperion-api_internal_aggregator.SimulationResult'
+        description: Simulation contains the transaction simulation results
+      transaction:
+        description: Transaction is the base64-encoded serialized unsigned transaction
+        type: string
+      txSignature:
+        description: TxSignature is the transaction signature (only available if signed
+          by session)
+        type: string
+    type: object
+  github_com_thehyperflames_hyperion-api_internal_aggregator.SimulationResult:
+    properties:
+      accountsNeeded:
+        description: AccountsNeeded lists accounts that need to be created
+        items:
+          type: string
+        type: array
+      computeUnitsConsumed:
+        description: ComputeUnitsConsumed is the number of compute units used
+        type: integer
+      computeUnitsTotal:
+        description: ComputeUnitsTotal is the compute unit limit
+        type: integer
+      error:
+        description: Error contains the error message if simulation failed
+        type: string
+      insufficientFunds:
+        description: InsufficientFunds indicates if user has insufficient SOL for
+          rent/fees
+        type: boolean
+      logs:
+        description: Logs contains the transaction logs from simulation
+        items:
+          type: string
+        type: array
+      slippageExceeded:
+        description: SlippageExceeded indicates if the swap would exceed slippage
+          tolerance
+        type: boolean
+      success:
+        description: Success indicates whether the simulation succeeded
+        type: boolean
+    type: object
+  github_com_thehyperflames_hyperion-api_internal_aggregator.SwapResponse:
+    properties:
+      amountIn:
+        description: AmountIn is the input token amount
+        type: string
+      amountOut:
+        description: AmountOut is the output token amount
+        type: string
+      computeUnitsEstimate:
+        description: ComputeUnitsEstimate is the estimated compute units needed
+        type: integer
+      feeAmount:
+        description: FeeAmount is the swap fee
+        type: string
+      lastValidBlockHeight:
+        description: LastValidBlockHeight is when the blockhash expires
+        type: integer
+      maxAmountIn:
+        description: MaxAmountIn is the maximum input (for ExactOut with slippage
+          applied)
+        type: string
+      minAmountOut:
+        description: MinAmountOut is the minimum output (for ExactIn with slippage
+          applied)
+        type: string
+      poolAddress:
+        description: PoolAddress is the pool used for the swap
+        type: string
+      simulation:
+        allOf:
+        - $ref: '#/definitions/github_com_thehyperflames_hyperion-api_internal_aggregator.SimulationResult'
+        description: Simulation contains the transaction simulation results
+      transaction:
+        description: Transaction is the base64-encoded serialized unsigned transaction
+        type: string
+      txSignature:
+        description: TxSignature is the transaction signature (only available if signed
+          by session)
+        type: string
+    type: object
+  github_com_thehyperflames_hyperion-api_internal_domain_dtos.AddDeviceRequest:
+    properties:
+      device_id:
+        type: string
+      fcm_token:
+        type: string
+    required:
+    - device_id
+    - fcm_token
+    type: object
+  github_com_thehyperflames_hyperion-api_internal_domain_dtos.RemoveDeviceRequest:
+    properties:
+      device_id:
+        type: string
+    required:
+    - device_id
+    type: object
+  github_com_thehyperflames_hyperion-api_internal_domain_dtos.ServerResponse:
+    properties:
+      code:
+        type: string
+      data: {}
+      message:
+        type: string
+    type: object
+  github_com_thehyperflames_hyperion-api_internal_domain_dtos.UserDataResponse:
+    properties:
+      encrypted_blob:
+        type: string
+      updated_at:
+        type: integer
+    type: object
+  github_com_thehyperflames_hyperion-api_internal_domain_dtos.UserDataSyncRequest:
+    properties:
+      encrypted_blob:
+        type: string
+      updated_at:
+        type: integer
+    required:
+    - encrypted_blob
+    - updated_at
+    type: object
+  github_com_thehyperflames_hyperion-api_internal_domain_models.Device:
+    properties:
+      device_id:
+        type: string
+      fcm_token:
+        type: string
+    type: object
+  github_com_thehyperflames_hyperion-api_internal_domain_models.Profile:
+    properties:
+      devices:
+        items:
+          $ref: '#/definitions/github_com_thehyperflames_hyperion-api_internal_domain_models.Device'
+        type: array
+      updated_at:
+        type: string
+      wallet_address:
+        type: string
+    type: object
+  github_com_thehyperflames_hyperion-api_internal_domain_models.User:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      og_score:
+        type: integer
+      ref_code:
+        type: string
+      referral_points:
+        type: integer
+      referrer_id:
+        type: integer
+      total_points:
+        type: integer
+      updated_at:
+        type: string
+      wallet_address:
+        type: string
+    type: object
+  github_com_thehyperflames_hyperion-api_internal_session.Session:
+    properties:
+      chainId:
+        type: string
+      createdAt:
+        type: string
+      domain:
+        type: string
+      id:
+        type: string
+      isActive:
+        type: boolean
+      maxAmount:
+        type: integer
+      onChainTxSig:
+        type: string
+      publicKey:
+        items:
+          type: integer
+        type: array
+      spentAmount:
+        type: integer
+      status:
+        allOf:
+        - $ref: '#/definitions/github_com_thehyperflames_hyperion-api_internal_session.SessionStatus'
+        description: On-chain session fields
+      tokenLimits:
+        description: Specific token spending limits
+        items:
+          $ref: '#/definitions/github_com_thehyperflames_hyperion-api_internal_session.TokenLimit'
+        type: array
+      unlimitedTokens:
+        description: If true, session can spend any token
+        type: boolean
+      user:
+        items:
+          type: integer
+        type: array
+      validUntil:
+        type: string
+    type: object
+  github_com_thehyperflames_hyperion-api_internal_session.SessionStatus:
+    enum:
+    - pending
+    - confirming
+    - active
+    - revoked
+    - expired
+    - failed
+    type: string
+    x-enum-varnames:
+    - SessionStatusPending
+    - SessionStatusConfirming
+    - SessionStatusActive
+    - SessionStatusRevoked
+    - SessionStatusExpired
+    - SessionStatusFailed
+  github_com_thehyperflames_hyperion-api_internal_session.TokenLimit:
+    properties:
+      amount:
+        description: Maximum spending amount in smallest units
+        type: integer
+      decimals:
+        description: Token decimals for formatting
+        type: integer
+      mint:
+        description: Token mint address
+        items:
+          type: integer
+        type: array
+      spentAmount:
+        description: Amount accumulated spent so far
+        type: integer
+      symbol:
+        description: Token symbol (optional, for display in intent)
+        type: string
+    type: object
+  internal_aggregator_handler.HopInfo:
+    properties:
+      aToB:
+        type: boolean
+      amountIn:
+        type: string
+      amountOut:
+        type: string
+      feeBps:
+        type: integer
+      inputMint:
+        type: string
+      outputMint:
+        type: string
+      poolAddress:
+        type: string
+      poolType:
+        type: string
+      priceImpactBps:
+        type: integer
+    type: object
+  internal_aggregator_handler.MultiHopQuoteResponse:
+    properties:
+      amountIn:
+        type: string
+      amountOut:
+        type: string
+      hopCount:
+        description: Number of hops in route
+        type: integer
+      hops:
+        description: Details for each hop
+        items:
+          $ref: '#/definitions/internal_aggregator_handler.HopInfo'
+        type: array
+      inputMint:
+        type: string
+      otherAmountThreshold:
+        description: min output or max input with slippage
+        type: string
+      outputMint:
+        type: string
+      priceImpactBps:
+        description: Maximum price impact across all hops
+        type: integer
+      priceImpactPercent:
+        description: Human-readable percentage
+        type: string
+      priceImpactSeverity:
+        description: Based on max price impact
+        type: string
+      priceImpactWarning:
+        description: User-friendly warning message
+        type: string
+      route:
+        description: Token path [inputMint, ..intermediate.., outputMint]
+        items:
+          type: string
+        type: array
+      routes:
+        description: Legacy compatibility
+        items:
+          $ref: '#/definitions/internal_aggregator_handler.RouteInfo'
+        type: array
+      totalFeeBps:
+        description: Approximate total fees
+        type: integer
+    type: object
+  internal_aggregator_handler.PoolDetailResponse:
+    properties:
+      active:
+        type: boolean
+      address:
+        type: string
+      fee_rate_bps:
+        type: integer
+      last_updated_slot:
+        type: integer
+      program_id:
+        type: string
+      reserve_a:
+        type: string
+      reserve_b:
+        type: string
+      token_mint_a:
+        type: string
+      token_mint_b:
+        type: string
+      token_vault_a:
+        type: string
+      token_vault_b:
+        type: string
+      type:
+        type: string
+    type: object
+  internal_aggregator_handler.PoolInfo:
+    properties:
+      active:
+        type: boolean
+      address:
+        type: string
+      token_mint_a:
+        type: string
+      token_mint_b:
+        type: string
+      type:
+        type: string
+    type: object
+  internal_aggregator_handler.PoolListResponse:
+    properties:
+      limit:
+        type: integer
+      page:
+        type: integer
+      pages:
+        type: integer
+      pools:
+        items:
+          $ref: '#/definitions/internal_aggregator_handler.PoolInfo'
+        type: array
+      total:
+        type: integer
+    type: object
+  internal_aggregator_handler.PoolStatsResponse:
+    properties:
+      pool_count:
+        type: integer
+      update_count:
+        type: integer
+    type: object
+  internal_aggregator_handler.QuoteResponse:
+    properties:
+      amountIn:
+        type: string
+      amountOut:
+        type: string
+      feeBps:
+        type: integer
+      inputMint:
+        type: string
+      otherAmountThreshold:
+        description: min output (ExactIn) or max input (ExactOut) based on slippage
+        type: string
+      outputMint:
+        type: string
+      priceImpactBps:
+        type: integer
+      priceImpactPercent:
+        description: Human-readable percentage
+        type: string
+      priceImpactSeverity:
+        description: none, low, moderate, high, extreme
+        type: string
+      priceImpactWarning:
+        description: User-friendly warning message
+        type: string
+      routes:
+        items:
+          $ref: '#/definitions/internal_aggregator_handler.RouteInfo'
+        type: array
+    type: object
+  internal_aggregator_handler.RouteHandlerRequest:
+    properties:
+      amount:
+        type: string
+      inputMint:
+        type: string
+      outputMint:
+        type: string
+      slippageBps:
+        description: optional, default 50bps
+        type: integer
+      swapMode:
+        description: ExactIn or ExactOut
+        type: string
+      userWallet:
+        type: string
+    required:
+    - amount
+    - inputMint
+    - outputMint
+    - swapMode
+    - userWallet
+    type: object
+  internal_aggregator_handler.RouteHandlerResponse:
+    properties:
+      amountIn:
+        type: string
+      amountOut:
+        type: string
+      computeUnitsEstimate:
+        type: integer
+      feeAmount:
+        type: string
+      hopCount:
+        description: Number of hops
+        type: integer
+      lastValidBlockHeight:
+        description: Blockhash expiry
+        type: integer
+      maxAmountIn:
+        description: For ExactOut
+        type: string
+      minAmountOut:
+        description: For ExactIn
+        type: string
+      poolAddress:
+        type: string
+      pools:
+        description: Pools used
+        items:
+          type: string
+        type: array
+      route:
+        description: Multi-hop specific fields
+        items:
+          type: string
+        type: array
+      simulation:
+        $ref: '#/definitions/github_com_thehyperflames_hyperion-api_internal_aggregator.SimulationResult'
+      transaction:
+        description: Base64-encoded unsigned transaction
+        type: string
+    type: object
+  internal_aggregator_handler.RouteInfo:
+    properties:
+      percent:
+        description: 100 for single pool direct swap
+        type: integer
+      poolAddress:
+        type: string
+      poolType:
+        type: string
+    type: object
+  internal_aggregator_handler.SwapHandlerRequest:
+    properties:
+      amount:
+        type: string
+      inputMint:
+        type: string
+      outputMint:
+        type: string
+      slippageBps:
+        description: optional, default 50bps
+        type: integer
+      swapMode:
+        description: ExactIn or ExactOut
+        type: string
+      useV2:
+        description: optional, use SwapV2 for Token-2022
+        type: boolean
+      userWallet:
+        type: string
+    required:
+    - amount
+    - inputMint
+    - outputMint
+    - swapMode
+    - userWallet
+    type: object
+  internal_aggregator_handler.SwapHandlerResponse:
+    properties:
+      amountIn:
+        type: string
+      amountOut:
+        type: string
+      computeUnitsEstimate:
+        type: integer
+      feeAmount:
+        type: string
+      lastValidBlockHeight:
+        description: Blockhash expiry
+        type: integer
+      maxAmountIn:
+        description: For ExactOut
+        type: string
+      minAmountOut:
+        description: For ExactIn
+        type: string
+      poolAddress:
+        type: string
+      simulation:
+        $ref: '#/definitions/github_com_thehyperflames_hyperion-api_internal_aggregator.SimulationResult'
+      transaction:
+        description: Base64-encoded unsigned transaction
+        type: string
+    type: object
+  internal_http_routes.CloseSessionOnChainResponse:
+    properties:
+      rentRecovered:
+        description: Whether rent was recovered
+        type: boolean
+      sessionId:
+        type: string
+      status:
+        type: string
+      transaction:
+        description: Base64 encoded signed transaction
+        type: string
+      txSignature:
+        description: On-chain transaction signature
+        type: string
+    type: object
+  internal_http_routes.ConfirmSessionRequest:
+    properties:
+      sessionId:
+        type: string
+      signature:
+        description: Base64 encoded Ed25519 signature
+        type: string
+    required:
+    - sessionId
+    - signature
+    type: object
+  internal_http_routes.ConfirmSessionResponse:
+    properties:
+      sessionId:
+        type: string
+      status:
+        type: string
+      transaction:
+        description: Base64 encoded signed transaction
+        type: string
+      txSignature:
+        description: On-chain transaction signature
+        type: string
+    type: object
+  internal_http_routes.CreateSessionRequest:
+    properties:
+      chainId:
+        description: Fogo Chain ID (e.g. "fogo-devnet")
+        type: string
+      domain:
+        description: App domain
+        type: string
+      durationHours:
+        description: 1h to 1 week
+        maximum: 168
+        minimum: 1
+        type: integer
+      maxAmount:
+        description: Max spending limit (deprecated, use tokenLimits)
+        type: integer
+      tokenLimits:
+        description: Specific token spending limits
+        items:
+          $ref: '#/definitions/internal_http_routes.TokenLimitRequest'
+        type: array
+      unlimitedTokens:
+        description: If true, can spend any token
+        type: boolean
+      user:
+        description: User's wallet address
+        type: string
+    required:
+    - chainId
+    - domain
+    - user
+    type: object
+  internal_http_routes.CreateSessionResponse:
+    properties:
+      intentMessage:
+        description: Message for user to sign
+        type: string
+      maxAmount:
+        type: integer
+      sessionId:
+        type: string
+      sessionPublicKey:
+        type: string
+      validUntil:
+        type: integer
+    type: object
+  internal_http_routes.LoginRequest:
+    properties:
+      address:
+        type: string
+      ref_code:
+        type: string
+      signature:
+        type: string
+    required:
+    - address
+    - signature
+    type: object
+  internal_http_routes.RevokeSessionOnChainResponse:
+    properties:
+      sessionId:
+        type: string
+      status:
+        type: string
+      transaction:
+        description: Base64 encoded signed transaction
+        type: string
+      txSignature:
+        description: On-chain transaction signature
+        type: string
+    type: object
+  internal_http_routes.SwapWithSessionRequest:
+    properties:
+      amount:
+        $ref: '#/definitions/big.Int'
+      inputMint:
+        type: string
+      outputMint:
+        type: string
+      sessionId:
+        type: string
+      slippageBps:
+        type: integer
+      swapMode:
+        description: ExactIn or ExactOut
+        type: string
+      userWallet:
+        type: string
+    required:
+    - amount
+    - inputMint
+    - outputMint
+    - sessionId
+    - swapMode
+    - userWallet
+    type: object
+  internal_http_routes.TokenLimitRequest:
+    properties:
+      amount:
+        description: Maximum spending amount (as string for large numbers)
+        type: string
+      decimals:
+        description: Token decimals
+        type: integer
+      mint:
+        description: Token mint address (base58)
+        type: string
+      symbol:
+        description: Token symbol (optional, for display)
+        type: string
+    required:
+    - amount
+    - decimals
+    - mint
+    type: object
+info:
+  contact: {}
+paths:
+  /api/v1/auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Verifies Ed25519 signature and returns a JWT access token
+      parameters:
+      - description: Login details
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/internal_http_routes.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Login
+      tags:
+      - Auth
+  /api/v1/auth/nonce:
+    get:
+      description: Generates a random nonce and a message to be signed by the wallet
+      parameters:
+      - description: Wallet Address
+        in: query
+        name: address
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Generate Nonce
+      tags:
+      - Auth
+  /api/v1/pools/{address}:
+    get:
+      description: Returns detailed information for a specific pool
+      parameters:
+      - description: Pool address
+        in: path
+        name: address
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/internal_aggregator_handler.PoolDetailResponse'
+        "404":
+          description: Not Found
+      summary: Get pool by address
+      tags:
+      - pools
+  /api/v1/pools/list:
+    get:
+      description: Returns a paginated list of all discovered pools
+      parameters:
+      - default: 1
+        description: Page number
+        in: query
+        name: page
+        type: integer
+      - default: 100
+        description: Items per page
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/internal_aggregator_handler.PoolListResponse'
+      summary: List all pools
+      tags:
+      - pools
+  /api/v1/pools/stats:
+    get:
+      description: Returns the current pool count and update count
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/internal_aggregator_handler.PoolStatsResponse'
+      summary: Get pool statistics
+      tags:
+      - pools
+  /api/v1/profile:
+    get:
+      consumes:
+      - application/json
+      description: Get the profile of the authenticated user
+      parameters:
+      - description: Wallet Address
+        in: header
+        name: X-Wallet-Address
+        type: string
+      - description: Timestamp
+        in: header
+        name: X-Timestamp
+        type: string
+      - description: Signature
+        in: header
+        name: X-Signature
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_thehyperflames_hyperion-api_internal_domain_models.Profile'
+      summary: Get profile
+      tags:
+      - Profile
+  /api/v1/profile/devices:
+    delete:
+      consumes:
+      - application/json
+      description: Remove a device from the authenticated user
+      parameters:
+      - description: Wallet Address
+        in: header
+        name: X-Wallet-Address
+        required: true
+        type: string
+      - description: Timestamp
+        in: header
+        name: X-Timestamp
+        required: true
+        type: string
+      - description: Signature
+        in: header
+        name: X-Signature
+        required: true
+        type: string
+      - description: Device
+        in: body
+        name: device
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_thehyperflames_hyperion-api_internal_domain_dtos.RemoveDeviceRequest'
+      produces:
+      - application/json
+      responses: {}
+      summary: Remove device
+      tags:
+      - Profile
+    post:
+      consumes:
+      - application/json
+      description: Add a device to the authenticated user
+      parameters:
+      - description: Wallet Address
+        in: header
+        name: X-Wallet-Address
+        type: string
+      - description: Timestamp
+        in: header
+        name: X-Timestamp
+        type: string
+      - description: Signature
+        in: header
+        name: X-Signature
+        type: string
+      - description: Device
+        in: body
+        name: device
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_thehyperflames_hyperion-api_internal_domain_dtos.AddDeviceRequest'
+      produces:
+      - application/json
+      responses: {}
+      summary: Add device
+      tags:
+      - Profile
+  /api/v1/quote:
+    get:
+      description: Calculate a swap quote using multi-hop routing (finds best path
+        including via intermediate tokens)
+      parameters:
+      - description: Input token mint address
+        in: query
+        name: inputMint
+        required: true
+        type: string
+      - description: Output token mint address
+        in: query
+        name: outputMint
+        required: true
+        type: string
+      - description: Amount (in smallest units)
+        in: query
+        name: amount
+        required: true
+        type: string
+      - description: 'Swap mode: ExactIn or ExactOut'
+        in: query
+        name: swapMode
+        required: true
+        type: string
+      - description: 'Slippage tolerance in basis points (default: 50)'
+        in: query
+        name: slippageBps
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/internal_aggregator_handler.MultiHopQuoteResponse'
+        "400":
+          description: Bad Request
+        "404":
+          description: Not Found
+      summary: Get multi-hop swap quote
+      tags:
+      - quote
+  /api/v1/quote/direct:
+    get:
+      description: Calculate a swap quote for a direct (single-hop) swap
+      parameters:
+      - description: Input token mint address
+        in: query
+        name: inputMint
+        required: true
+        type: string
+      - description: Output token mint address
+        in: query
+        name: outputMint
+        required: true
+        type: string
+      - description: Amount (in smallest units)
+        in: query
+        name: amount
+        required: true
+        type: string
+      - description: 'Swap mode: ExactIn or ExactOut'
+        in: query
+        name: swapMode
+        required: true
+        type: string
+      - description: 'Slippage tolerance in basis points (default: 50)'
+        in: query
+        name: slippageBps
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/internal_aggregator_handler.QuoteResponse'
+        "400":
+          description: Bad Request
+        "404":
+          description: Not Found
+      summary: Get direct swap quote
+      tags:
+      - quote
+  /api/v1/quote/multihop:
+    get:
+      description: Calculate a swap quote using multi-hop routing (finds best path
+        including via intermediate tokens)
+      parameters:
+      - description: Input token mint address
+        in: query
+        name: inputMint
+        required: true
+        type: string
+      - description: Output token mint address
+        in: query
+        name: outputMint
+        required: true
+        type: string
+      - description: Amount (in smallest units)
+        in: query
+        name: amount
+        required: true
+        type: string
+      - description: 'Swap mode: ExactIn or ExactOut'
+        in: query
+        name: swapMode
+        required: true
+        type: string
+      - description: 'Slippage tolerance in basis points (default: 50)'
+        in: query
+        name: slippageBps
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/internal_aggregator_handler.MultiHopQuoteResponse'
+        "400":
+          description: Bad Request
+        "404":
+          description: Not Found
+      summary: Get multi-hop swap quote
+      tags:
+      - quote
+  /api/v1/route:
+    post:
+      consumes:
+      - application/json
+      description: Build an unsigned swap transaction using Hyperion Aggregator's
+        Route instruction with automatic multi-hop routing. Finds the best path including
+        via intermediate tokens (SOL, USDC, USDT).
+      parameters:
+      - description: Route request parameters
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/internal_aggregator_handler.RouteHandlerRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/internal_aggregator_handler.RouteHandlerResponse'
+        "400":
+          description: Bad Request
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      summary: Build multi-hop route transaction using Hyperion Aggregator
+      tags:
+      - route
+  /api/v1/route/direct:
+    post:
+      consumes:
+      - application/json
+      description: Build an unsigned swap transaction using Hyperion Aggregator's
+        Route instruction. Single-hop only.
+      parameters:
+      - description: Route request parameters
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/internal_aggregator_handler.RouteHandlerRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/internal_aggregator_handler.RouteHandlerResponse'
+        "400":
+          description: Bad Request
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      summary: Build direct route transaction using Hyperion Aggregator
+      tags:
+      - route
+  /api/v1/route/multihop:
+    post:
+      consumes:
+      - application/json
+      description: Build an unsigned swap transaction using Hyperion Aggregator's
+        Route instruction with automatic multi-hop routing. Finds the best path including
+        via intermediate tokens (SOL, USDC, USDT).
+      parameters:
+      - description: Route request parameters
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/internal_aggregator_handler.RouteHandlerRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/internal_aggregator_handler.RouteHandlerResponse'
+        "400":
+          description: Bad Request
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      summary: Build multi-hop route transaction using Hyperion Aggregator
+      tags:
+      - route
+  /api/v1/session/{id}:
+    get:
+      parameters:
+      - description: Session ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_thehyperflames_hyperion-api_internal_session.Session'
+      summary: Get session details
+      tags:
+      - session
+  /api/v1/session/{id}/close:
+    post:
+      description: Closes a revoked/expired session on-chain, recovering rent to the
+        sponsor
+      parameters:
+      - description: Session ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/internal_http_routes.CloseSessionOnChainResponse'
+      summary: Close a session on-chain
+      tags:
+      - session
+  /api/v1/session/{id}/revoke:
+    post:
+      description: Deactivates a session in the backend (does not revoke on-chain)
+      parameters:
+      - description: Session ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Revoke a trading session locally
+      tags:
+      - session
+  /api/v1/session/{id}/revoke/onchain:
+    post:
+      description: Submits a revoke_session transaction to the Session Manager program
+      parameters:
+      - description: Session ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/internal_http_routes.RevokeSessionOnChainResponse'
+      summary: Revoke a trading session on-chain
+      tags:
+      - session
+  /api/v1/session/{id}/status:
+    get:
+      description: Checks if the session exists on-chain and returns its status
+      parameters:
+      - description: Session ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get session on-chain status
+      tags:
+      - session
+  /api/v1/session/confirm:
+    post:
+      consumes:
+      - application/json
+      description: Submits the user's Ed25519 signature to create the session on-chain
+      parameters:
+      - description: Session confirmation request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/internal_http_routes.ConfirmSessionRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/internal_http_routes.ConfirmSessionResponse'
+      summary: Confirm session with user signature
+      tags:
+      - session
+  /api/v1/session/create:
+    post:
+      consumes:
+      - application/json
+      description: Creates an ephemeral session key and returns an Intent Message
+        for the user to sign
+      parameters:
+      - description: Session creation request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/internal_http_routes.CreateSessionRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/internal_http_routes.CreateSessionResponse'
+      summary: Create a new trading session
+      tags:
+      - session
+  /api/v1/session/swap:
+    post:
+      consumes:
+      - application/json
+      description: Builds and signs a multi-hop swap transaction using the stored
+        session key. Finds the best route including via intermediate tokens.
+      parameters:
+      - description: Swap request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/internal_http_routes.SwapWithSessionRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_thehyperflames_hyperion-api_internal_aggregator.MultiHopSwapResponse'
+      summary: Execute multi-hop swap with session
+      tags:
+      - session
+  /api/v1/session/swap/direct:
+    post:
+      consumes:
+      - application/json
+      description: Builds and signs a single-hop swap transaction using the stored
+        session key
+      parameters:
+      - description: Swap request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/internal_http_routes.SwapWithSessionRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_thehyperflames_hyperion-api_internal_aggregator.SwapResponse'
+      summary: Execute direct swap with session
+      tags:
+      - session
+  /api/v1/session/swap/multihop:
+    post:
+      consumes:
+      - application/json
+      description: Builds and signs a multi-hop swap transaction using the stored
+        session key. Finds the best route including via intermediate tokens.
+      parameters:
+      - description: Swap request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/internal_http_routes.SwapWithSessionRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_thehyperflames_hyperion-api_internal_aggregator.MultiHopSwapResponse'
+      summary: Execute multi-hop swap with session
+      tags:
+      - session
+  /api/v1/session/user/{wallet}:
+    get:
+      parameters:
+      - description: User wallet address
+        in: path
+        name: wallet
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/github_com_thehyperflames_hyperion-api_internal_session.Session'
+            type: array
+      summary: Get all sessions for a user
+      tags:
+      - session
+  /api/v1/stats:
+    get:
+      consumes:
+      - application/json
+      description: Get global statistics for marketing page (Total Volume, Swaps,
+        TVL, etc.)
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_thehyperflames_hyperion-api_internal_aggregator.GlobalStats'
+      summary: Get Global Stats
+      tags:
+      - Stats
+  /api/v1/swap:
+    post:
+      consumes:
+      - application/json
+      description: Build an unsigned swap transaction for the user to sign
+      parameters:
+      - description: Swap request parameters
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/internal_aggregator_handler.SwapHandlerRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/internal_aggregator_handler.SwapHandlerResponse'
+        "400":
+          description: Bad Request
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      summary: Build swap transaction
+      tags:
+      - swap
+  /api/v1/user/profile:
+    get:
+      description: Returns the profile of the currently logged-in user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_thehyperflames_hyperion-api_internal_domain_models.User'
+      security:
+      - ApiKeyAuth: []
+      summary: Get Profile
+      tags:
+      - User
+  /api/v1/userdata/pull:
+    get:
+      consumes:
+      - application/json
+      description: Pull encrypted user data (settings + contacts) for the authenticated
+        user
+      parameters:
+      - description: Wallet Address
+        in: header
+        name: X-Wallet-Address
+        type: string
+      - description: Timestamp
+        in: header
+        name: X-Timestamp
+        type: string
+      - description: Signature
+        in: header
+        name: X-Signature
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_thehyperflames_hyperion-api_internal_domain_dtos.ServerResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_thehyperflames_hyperion-api_internal_domain_dtos.UserDataResponse'
+              type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_thehyperflames_hyperion-api_internal_domain_dtos.ServerResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_thehyperflames_hyperion-api_internal_domain_dtos.ServerResponse'
+      security:
+      - BearerAuth: []
+      summary: Pull user data
+      tags:
+      - UserData
+  /api/v1/userdata/sync:
+    post:
+      consumes:
+      - application/json
+      description: Sync encrypted user data (settings + contacts) for the authenticated
+        user
+      parameters:
+      - description: Wallet Address
+        in: header
+        name: X-Wallet-Address
+        required: true
+        type: string
+      - description: Timestamp
+        in: header
+        name: X-Timestamp
+        required: true
+        type: string
+      - description: Signature
+        in: header
+        name: X-Signature
+        required: true
+        type: string
+      - description: Encrypted user data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_thehyperflames_hyperion-api_internal_domain_dtos.UserDataSyncRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_thehyperflames_hyperion-api_internal_domain_dtos.ServerResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_thehyperflames_hyperion-api_internal_domain_dtos.UserDataResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_thehyperflames_hyperion-api_internal_domain_dtos.ServerResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_thehyperflames_hyperion-api_internal_domain_dtos.ServerResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_thehyperflames_hyperion-api_internal_domain_dtos.ServerResponse'
+      security:
+      - BearerAuth: []
+      summary: Sync user data
+      tags:
+      - UserData
+swagger: "2.0"

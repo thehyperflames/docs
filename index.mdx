@@ -1,97 +1,92 @@
 ---
-title: "Introduction"
-description: "Welcome to the new home for your documentation"
+mode: "custom"
+title: "Hyperion API"
+description: "The First Session-Aware Aggregator on Solana"
 ---
 
-## Setting up
+<div className="relative min-h-screen text-[#181D27] dark:text-[#F9F9FB] overflow-hidden">
+  
+  {/* Hero Section */}
+  <div className="flex flex-col items-center justify-center pt-20 pb-20 md:pt-32 md:pb-32 relative px-4 text-center">
+    <div className="z-10 relative">
+      <div className="text-xs sm:text-base text-[#00BEF0] font-medium tracking-wide uppercase mb-4">
+        The Future of Trading
+      </div>
+      <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold tracking-tight mb-6">
+        Build with <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00BEF0] to-[#C7F284]">Hyperion</span>
+      </h1>
+      <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-10">
+        Integrate the first <b>Session-Aware Aggregator</b> on Solana. <br/>
+        Sign once, trade forever with zero latency and maximum security.
+      </p>
 
-Get your documentation site up and running in minutes.
+      <div className="flex flex-col sm:flex-row gap-4 justify-center">
+        <a 
+          href="/docs/get-started/introduction" 
+          className="inline-flex items-center justify-center px-8 py-3 bg-[#00BEF0] hover:bg-[#0090B5] text-white font-semibold rounded-xl transition-all shadow-lg hover:shadow-[#00BEF0]/30"
+        >
+          Get Started
+          <svg className="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg>
+        </a>
+        <a 
+          href="/docs/api-reference/session" 
+          className="inline-flex items-center justify-center px-8 py-3 bg-white dark:bg-zinc-800 text-gray-900 dark:text-white border border-gray-200 dark:border-zinc-700 font-semibold rounded-xl hover:bg-gray-50 dark:hover:bg-zinc-700 transition-all"
+        >
+          View API Key
+        </a>
+      </div>
+    </div>
+  </div>
 
-<Card
-  title="Start here"
-  icon="rocket"
-  href="/quickstart"
-  horizontal
->
-  Follow our three step quickstart guide.
-</Card>
+  {/* Feature Grid */}
+  <div className="max-w-6xl mx-auto px-4 pb-20">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      
+      {/* Feature 1 */}
+      <div className="p-8 rounded-2xl bg-gradient-to-b from-white to-gray-50 dark:from-zinc-900 dark:to-zinc-950 border border-gray-100 dark:border-zinc-800 hover:border-[#00BEF0]/50 transition-colors group">
+        <div className="w-12 h-12 rounded-lg bg-[#00BEF0]/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+           <svg className="w-6 h-6 text-[#00BEF0]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+        </div>
+        <h3 className="text-xl font-bold mb-2">Zero Latency</h3>
+        <p className="text-gray-500 dark:text-gray-400">
+          Eliminate wallet popups. Sessions allow your app to sign and submit trades instantly.
+        </p>
+      </div>
 
-## Make it yours
+      {/* Feature 2 */}
+      <div className="p-8 rounded-2xl bg-gradient-to-b from-white to-gray-50 dark:from-zinc-900 dark:to-zinc-950 border border-gray-100 dark:border-zinc-800 hover:border-[#00BEF0]/50 transition-colors group">
+        <div className="w-12 h-12 rounded-lg bg-[#00BEF0]/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+           <svg className="w-6 h-6 text-[#00BEF0]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+        </div>
+        <h3 className="text-xl font-bold mb-2">Secure Limits</h3>
+        <p className="text-gray-500 dark:text-gray-400">
+          Granular spending limits and scope-restricted keys keep user funds safe.
+        </p>
+      </div>
 
-Design a docs site that looks great and empowers your users.
+      {/* Feature 3 */}
+      <div className="p-8 rounded-2xl bg-gradient-to-b from-white to-gray-50 dark:from-zinc-900 dark:to-zinc-950 border border-gray-100 dark:border-zinc-800 hover:border-[#00BEF0]/50 transition-colors group">
+        <div className="w-12 h-12 rounded-lg bg-[#00BEF0]/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+           <svg className="w-6 h-6 text-[#00BEF0]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 7m0 13V7" /></svg>
+        </div>
+        <h3 className="text-xl font-bold mb-2">Smart Routing</h3>
+        <p className="text-gray-500 dark:text-gray-400">
+          Best price execution via Multi-Hop across Raydium, Orca, Meteora, and more.
+        </p>
+      </div>
 
-<Columns cols={2}>
-  <Card
-    title="Edit locally"
-    icon="pen-to-square"
-    href="/development"
-  >
-    Edit your docs locally and preview them in real time.
-  </Card>
-  <Card
-    title="Customize your site"
-    icon="palette"
-    href="/essentials/settings"
-  >
-    Customize the design and colors of your site to match your brand.
-  </Card>
-    <Card
-    title="Set up navigation"
-    icon="map"
-    href="/essentials/navigation"
-  >
-    Organize your docs to help users find what they need and succeed with your product.
-  </Card>
-  <Card
-    title="API documentation"
-    icon="terminal"
-    href="/api-reference/introduction"
-  >
-    Auto-generate API documentation from OpenAPI specifications.
-  </Card>
-</Columns>
+    </div>
+  </div>
 
-## Create beautiful pages
+  <div className="max-w-6xl mx-auto px-4 py-12 border-t border-gray-200 dark:border-zinc-800">
+     <CardGroup cols={2}>
+        <Card title="Read the Guide" icon="book" href="/docs/guides/executing-swaps">
+          Learn how to execute your first swap transaction.
+        </Card>
+        <Card title="Explore APIs" icon="code" href="/docs/api-reference/session">
+          Dive into the API reference for sessions and routes.
+        </Card>
+     </CardGroup>
+  </div>
 
-Everything you need to create world-class documentation.
-
-<Columns cols={2}>
-  <Card
-    title="Write with MDX"
-    icon="pen-fancy"
-    href="/essentials/markdown"
-  >
-    Use MDX to style your docs pages.
-  </Card>
-  <Card
-    title="Code samples"
-    icon="code"
-    href="/essentials/code"
-  >
-    Add sample code to demonstrate how to use your product.
-  </Card>
-  <Card
-    title="Images"
-    icon="image"
-    href="/essentials/images"
-  >
-    Display images and other media.
-  </Card>
-  <Card
-    title="Reusable snippets"
-    icon="recycle"
-    href="/essentials/reusable-snippets"
-  >
-    Write once and reuse across your docs.
-  </Card>
-</Columns>
-
-## Need inspiration?
-
-<Card
-  title="See complete examples"
-  icon="stars"
-  href="https://mintlify.com/customers"
->
-  Browse our showcase of exceptional documentation sites.
-</Card>
+</div>

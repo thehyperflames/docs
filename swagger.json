@@ -1,0 +1,2276 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {}
+    },
+    "paths": {
+        "/api/v1/auth/login": {
+            "post": {
+                "description": "Verifies Ed25519 signature and returns a JWT access token",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Login",
+                "parameters": [
+                    {
+                        "description": "Login details",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_routes.LoginRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/auth/nonce": {
+            "get": {
+                "description": "Generates a random nonce and a message to be signed by the wallet",
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Generate Nonce",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Wallet Address",
+                        "name": "address",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/pools/list": {
+            "get": {
+                "description": "Returns a paginated list of all discovered pools",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "pools"
+                ],
+                "summary": "List all pools",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "Page number",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 100,
+                        "description": "Items per page",
+                        "name": "limit",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/internal_aggregator_handler.PoolListResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/pools/stats": {
+            "get": {
+                "description": "Returns the current pool count and update count",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "pools"
+                ],
+                "summary": "Get pool statistics",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/internal_aggregator_handler.PoolStatsResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/pools/{address}": {
+            "get": {
+                "description": "Returns detailed information for a specific pool",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "pools"
+                ],
+                "summary": "Get pool by address",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Pool address",
+                        "name": "address",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/internal_aggregator_handler.PoolDetailResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/api/v1/profile": {
+            "get": {
+                "description": "Get the profile of the authenticated user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Get profile",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Wallet Address",
+                        "name": "X-Wallet-Address",
+                        "in": "header"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Timestamp",
+                        "name": "X-Timestamp",
+                        "in": "header"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Signature",
+                        "name": "X-Signature",
+                        "in": "header"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_thehyperflames_hyperion-api_internal_domain_models.Profile"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/profile/devices": {
+            "post": {
+                "description": "Add a device to the authenticated user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Add device",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Wallet Address",
+                        "name": "X-Wallet-Address",
+                        "in": "header"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Timestamp",
+                        "name": "X-Timestamp",
+                        "in": "header"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Signature",
+                        "name": "X-Signature",
+                        "in": "header"
+                    },
+                    {
+                        "description": "Device",
+                        "name": "device",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_thehyperflames_hyperion-api_internal_domain_dtos.AddDeviceRequest"
+                        }
+                    }
+                ],
+                "responses": {}
+            },
+            "delete": {
+                "description": "Remove a device from the authenticated user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Remove device",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Wallet Address",
+                        "name": "X-Wallet-Address",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Timestamp",
+                        "name": "X-Timestamp",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Signature",
+                        "name": "X-Signature",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "Device",
+                        "name": "device",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_thehyperflames_hyperion-api_internal_domain_dtos.RemoveDeviceRequest"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/api/v1/quote": {
+            "get": {
+                "description": "Calculate a swap quote using multi-hop routing (finds best path including via intermediate tokens)",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "quote"
+                ],
+                "summary": "Get multi-hop swap quote",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Input token mint address",
+                        "name": "inputMint",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Output token mint address",
+                        "name": "outputMint",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Amount (in smallest units)",
+                        "name": "amount",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Swap mode: ExactIn or ExactOut",
+                        "name": "swapMode",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Slippage tolerance in basis points (default: 50)",
+                        "name": "slippageBps",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/internal_aggregator_handler.MultiHopQuoteResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/api/v1/quote/direct": {
+            "get": {
+                "description": "Calculate a swap quote for a direct (single-hop) swap",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "quote"
+                ],
+                "summary": "Get direct swap quote",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Input token mint address",
+                        "name": "inputMint",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Output token mint address",
+                        "name": "outputMint",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Amount (in smallest units)",
+                        "name": "amount",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Swap mode: ExactIn or ExactOut",
+                        "name": "swapMode",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Slippage tolerance in basis points (default: 50)",
+                        "name": "slippageBps",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/internal_aggregator_handler.QuoteResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/api/v1/quote/multihop": {
+            "get": {
+                "description": "Calculate a swap quote using multi-hop routing (finds best path including via intermediate tokens)",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "quote"
+                ],
+                "summary": "Get multi-hop swap quote",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Input token mint address",
+                        "name": "inputMint",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Output token mint address",
+                        "name": "outputMint",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Amount (in smallest units)",
+                        "name": "amount",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Swap mode: ExactIn or ExactOut",
+                        "name": "swapMode",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Slippage tolerance in basis points (default: 50)",
+                        "name": "slippageBps",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/internal_aggregator_handler.MultiHopQuoteResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/api/v1/route": {
+            "post": {
+                "description": "Build an unsigned swap transaction using Hyperion Aggregator's Route instruction with automatic multi-hop routing. Finds the best path including via intermediate tokens (SOL, USDC, USDT).",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "route"
+                ],
+                "summary": "Build multi-hop route transaction using Hyperion Aggregator",
+                "parameters": [
+                    {
+                        "description": "Route request parameters",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/internal_aggregator_handler.RouteHandlerRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/internal_aggregator_handler.RouteHandlerResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/api/v1/route/direct": {
+            "post": {
+                "description": "Build an unsigned swap transaction using Hyperion Aggregator's Route instruction. Single-hop only.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "route"
+                ],
+                "summary": "Build direct route transaction using Hyperion Aggregator",
+                "parameters": [
+                    {
+                        "description": "Route request parameters",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/internal_aggregator_handler.RouteHandlerRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/internal_aggregator_handler.RouteHandlerResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/api/v1/route/multihop": {
+            "post": {
+                "description": "Build an unsigned swap transaction using Hyperion Aggregator's Route instruction with automatic multi-hop routing. Finds the best path including via intermediate tokens (SOL, USDC, USDT).",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "route"
+                ],
+                "summary": "Build multi-hop route transaction using Hyperion Aggregator",
+                "parameters": [
+                    {
+                        "description": "Route request parameters",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/internal_aggregator_handler.RouteHandlerRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/internal_aggregator_handler.RouteHandlerResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/api/v1/session/confirm": {
+            "post": {
+                "description": "Submits the user's Ed25519 signature to create the session on-chain",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "session"
+                ],
+                "summary": "Confirm session with user signature",
+                "parameters": [
+                    {
+                        "description": "Session confirmation request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_routes.ConfirmSessionRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_routes.ConfirmSessionResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/session/create": {
+            "post": {
+                "description": "Creates an ephemeral session key and returns an Intent Message for the user to sign",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "session"
+                ],
+                "summary": "Create a new trading session",
+                "parameters": [
+                    {
+                        "description": "Session creation request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_routes.CreateSessionRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_routes.CreateSessionResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/session/swap": {
+            "post": {
+                "description": "Builds and signs a multi-hop swap transaction using the stored session key. Finds the best route including via intermediate tokens.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "session"
+                ],
+                "summary": "Execute multi-hop swap with session",
+                "parameters": [
+                    {
+                        "description": "Swap request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_routes.SwapWithSessionRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_thehyperflames_hyperion-api_internal_aggregator.MultiHopSwapResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/session/swap/direct": {
+            "post": {
+                "description": "Builds and signs a single-hop swap transaction using the stored session key",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "session"
+                ],
+                "summary": "Execute direct swap with session",
+                "parameters": [
+                    {
+                        "description": "Swap request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_routes.SwapWithSessionRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_thehyperflames_hyperion-api_internal_aggregator.SwapResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/session/swap/multihop": {
+            "post": {
+                "description": "Builds and signs a multi-hop swap transaction using the stored session key. Finds the best route including via intermediate tokens.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "session"
+                ],
+                "summary": "Execute multi-hop swap with session",
+                "parameters": [
+                    {
+                        "description": "Swap request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_routes.SwapWithSessionRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_thehyperflames_hyperion-api_internal_aggregator.MultiHopSwapResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/session/user/{wallet}": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "session"
+                ],
+                "summary": "Get all sessions for a user",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User wallet address",
+                        "name": "wallet",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/github_com_thehyperflames_hyperion-api_internal_session.Session"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/session/{id}": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "session"
+                ],
+                "summary": "Get session details",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Session ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_thehyperflames_hyperion-api_internal_session.Session"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/session/{id}/close": {
+            "post": {
+                "description": "Closes a revoked/expired session on-chain, recovering rent to the sponsor",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "session"
+                ],
+                "summary": "Close a session on-chain",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Session ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_routes.CloseSessionOnChainResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/session/{id}/revoke": {
+            "post": {
+                "description": "Deactivates a session in the backend (does not revoke on-chain)",
+                "tags": [
+                    "session"
+                ],
+                "summary": "Revoke a trading session locally",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Session ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/session/{id}/revoke/onchain": {
+            "post": {
+                "description": "Submits a revoke_session transaction to the Session Manager program",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "session"
+                ],
+                "summary": "Revoke a trading session on-chain",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Session ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/internal_http_routes.RevokeSessionOnChainResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/session/{id}/status": {
+            "get": {
+                "description": "Checks if the session exists on-chain and returns its status",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "session"
+                ],
+                "summary": "Get session on-chain status",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Session ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/stats": {
+            "get": {
+                "description": "Get global statistics for marketing page (Total Volume, Swaps, TVL, etc.)",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Stats"
+                ],
+                "summary": "Get Global Stats",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_thehyperflames_hyperion-api_internal_aggregator.GlobalStats"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/swap": {
+            "post": {
+                "description": "Build an unsigned swap transaction for the user to sign",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "swap"
+                ],
+                "summary": "Build swap transaction",
+                "parameters": [
+                    {
+                        "description": "Swap request parameters",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/internal_aggregator_handler.SwapHandlerRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/internal_aggregator_handler.SwapHandlerResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/api/v1/user/profile": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Returns the profile of the currently logged-in user",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "Get Profile",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_thehyperflames_hyperion-api_internal_domain_models.User"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/userdata/pull": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Pull encrypted user data (settings + contacts) for the authenticated user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "UserData"
+                ],
+                "summary": "Pull user data",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Wallet Address",
+                        "name": "X-Wallet-Address",
+                        "in": "header"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Timestamp",
+                        "name": "X-Timestamp",
+                        "in": "header"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Signature",
+                        "name": "X-Signature",
+                        "in": "header"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_thehyperflames_hyperion-api_internal_domain_dtos.ServerResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/github_com_thehyperflames_hyperion-api_internal_domain_dtos.UserDataResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_thehyperflames_hyperion-api_internal_domain_dtos.ServerResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_thehyperflames_hyperion-api_internal_domain_dtos.ServerResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/userdata/sync": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Sync encrypted user data (settings + contacts) for the authenticated user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "UserData"
+                ],
+                "summary": "Sync user data",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Wallet Address",
+                        "name": "X-Wallet-Address",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Timestamp",
+                        "name": "X-Timestamp",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Signature",
+                        "name": "X-Signature",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "Encrypted user data",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_thehyperflames_hyperion-api_internal_domain_dtos.UserDataSyncRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_thehyperflames_hyperion-api_internal_domain_dtos.ServerResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/github_com_thehyperflames_hyperion-api_internal_domain_dtos.UserDataResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_thehyperflames_hyperion-api_internal_domain_dtos.ServerResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_thehyperflames_hyperion-api_internal_domain_dtos.ServerResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_thehyperflames_hyperion-api_internal_domain_dtos.ServerResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "big.Int": {
+            "type": "object"
+        },
+        "github_com_thehyperflames_hyperion-api_internal_aggregator.GlobalStats": {
+            "type": "object",
+            "properties": {
+                "active_users": {
+                    "type": "integer"
+                },
+                "pool_count": {
+                    "type": "integer"
+                },
+                "supported_tokens": {
+                    "type": "integer"
+                },
+                "total_swaps": {
+                    "type": "integer"
+                },
+                "total_volume_usd": {
+                    "type": "number"
+                },
+                "tvl_available_usd": {
+                    "type": "number"
+                }
+            }
+        },
+        "github_com_thehyperflames_hyperion-api_internal_aggregator.MultiHopSwapResponse": {
+            "type": "object",
+            "properties": {
+                "amountIn": {
+                    "description": "AmountIn is the input token amount",
+                    "type": "string"
+                },
+                "amountOut": {
+                    "description": "AmountOut is the output token amount",
+                    "type": "string"
+                },
+                "computeUnitsEstimate": {
+                    "description": "ComputeUnitsEstimate is the estimated compute units needed",
+                    "type": "integer"
+                },
+                "feeAmount": {
+                    "description": "FeeAmount is the swap fee",
+                    "type": "string"
+                },
+                "hopCount": {
+                    "description": "HopCount is the number of swaps in the route",
+                    "type": "integer"
+                },
+                "lastValidBlockHeight": {
+                    "description": "LastValidBlockHeight is when the blockhash expires",
+                    "type": "integer"
+                },
+                "maxAmountIn": {
+                    "description": "MaxAmountIn is the maximum input (for ExactOut with slippage applied)",
+                    "type": "string"
+                },
+                "minAmountOut": {
+                    "description": "MinAmountOut is the minimum output (for ExactIn with slippage applied)",
+                    "type": "string"
+                },
+                "poolAddress": {
+                    "description": "PoolAddress is the pool used for the swap",
+                    "type": "string"
+                },
+                "pools": {
+                    "description": "Pools is the list of pools used",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "route": {
+                    "description": "Route is the token path taken",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "simulation": {
+                    "description": "Simulation contains the transaction simulation results",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/github_com_thehyperflames_hyperion-api_internal_aggregator.SimulationResult"
+                        }
+                    ]
+                },
+                "transaction": {
+                    "description": "Transaction is the base64-encoded serialized unsigned transaction",
+                    "type": "string"
+                },
+                "txSignature": {
+                    "description": "TxSignature is the transaction signature (only available if signed by session)",
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_thehyperflames_hyperion-api_internal_aggregator.SimulationResult": {
+            "type": "object",
+            "properties": {
+                "accountsNeeded": {
+                    "description": "AccountsNeeded lists accounts that need to be created",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "computeUnitsConsumed": {
+                    "description": "ComputeUnitsConsumed is the number of compute units used",
+                    "type": "integer"
+                },
+                "computeUnitsTotal": {
+                    "description": "ComputeUnitsTotal is the compute unit limit",
+                    "type": "integer"
+                },
+                "error": {
+                    "description": "Error contains the error message if simulation failed",
+                    "type": "string"
+                },
+                "insufficientFunds": {
+                    "description": "InsufficientFunds indicates if user has insufficient SOL for rent/fees",
+                    "type": "boolean"
+                },
+                "logs": {
+                    "description": "Logs contains the transaction logs from simulation",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "slippageExceeded": {
+                    "description": "SlippageExceeded indicates if the swap would exceed slippage tolerance",
+                    "type": "boolean"
+                },
+                "success": {
+                    "description": "Success indicates whether the simulation succeeded",
+                    "type": "boolean"
+                }
+            }
+        },
+        "github_com_thehyperflames_hyperion-api_internal_aggregator.SwapResponse": {
+            "type": "object",
+            "properties": {
+                "amountIn": {
+                    "description": "AmountIn is the input token amount",
+                    "type": "string"
+                },
+                "amountOut": {
+                    "description": "AmountOut is the output token amount",
+                    "type": "string"
+                },
+                "computeUnitsEstimate": {
+                    "description": "ComputeUnitsEstimate is the estimated compute units needed",
+                    "type": "integer"
+                },
+                "feeAmount": {
+                    "description": "FeeAmount is the swap fee",
+                    "type": "string"
+                },
+                "lastValidBlockHeight": {
+                    "description": "LastValidBlockHeight is when the blockhash expires",
+                    "type": "integer"
+                },
+                "maxAmountIn": {
+                    "description": "MaxAmountIn is the maximum input (for ExactOut with slippage applied)",
+                    "type": "string"
+                },
+                "minAmountOut": {
+                    "description": "MinAmountOut is the minimum output (for ExactIn with slippage applied)",
+                    "type": "string"
+                },
+                "poolAddress": {
+                    "description": "PoolAddress is the pool used for the swap",
+                    "type": "string"
+                },
+                "simulation": {
+                    "description": "Simulation contains the transaction simulation results",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/github_com_thehyperflames_hyperion-api_internal_aggregator.SimulationResult"
+                        }
+                    ]
+                },
+                "transaction": {
+                    "description": "Transaction is the base64-encoded serialized unsigned transaction",
+                    "type": "string"
+                },
+                "txSignature": {
+                    "description": "TxSignature is the transaction signature (only available if signed by session)",
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_thehyperflames_hyperion-api_internal_domain_dtos.AddDeviceRequest": {
+            "type": "object",
+            "required": [
+                "device_id",
+                "fcm_token"
+            ],
+            "properties": {
+                "device_id": {
+                    "type": "string"
+                },
+                "fcm_token": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_thehyperflames_hyperion-api_internal_domain_dtos.RemoveDeviceRequest": {
+            "type": "object",
+            "required": [
+                "device_id"
+            ],
+            "properties": {
+                "device_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_thehyperflames_hyperion-api_internal_domain_dtos.ServerResponse": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "data": {},
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_thehyperflames_hyperion-api_internal_domain_dtos.UserDataResponse": {
+            "type": "object",
+            "properties": {
+                "encrypted_blob": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "integer"
+                }
+            }
+        },
+        "github_com_thehyperflames_hyperion-api_internal_domain_dtos.UserDataSyncRequest": {
+            "type": "object",
+            "required": [
+                "encrypted_blob",
+                "updated_at"
+            ],
+            "properties": {
+                "encrypted_blob": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "integer"
+                }
+            }
+        },
+        "github_com_thehyperflames_hyperion-api_internal_domain_models.Device": {
+            "type": "object",
+            "properties": {
+                "device_id": {
+                    "type": "string"
+                },
+                "fcm_token": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_thehyperflames_hyperion-api_internal_domain_models.Profile": {
+            "type": "object",
+            "properties": {
+                "devices": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_thehyperflames_hyperion-api_internal_domain_models.Device"
+                    }
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "wallet_address": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_thehyperflames_hyperion-api_internal_domain_models.User": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "og_score": {
+                    "type": "integer"
+                },
+                "ref_code": {
+                    "type": "string"
+                },
+                "referral_points": {
+                    "type": "integer"
+                },
+                "referrer_id": {
+                    "type": "integer"
+                },
+                "total_points": {
+                    "type": "integer"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "wallet_address": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_thehyperflames_hyperion-api_internal_session.Session": {
+            "type": "object",
+            "properties": {
+                "chainId": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "domain": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "isActive": {
+                    "type": "boolean"
+                },
+                "maxAmount": {
+                    "type": "integer"
+                },
+                "onChainTxSig": {
+                    "type": "string"
+                },
+                "publicKey": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "spentAmount": {
+                    "type": "integer"
+                },
+                "status": {
+                    "description": "On-chain session fields",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/github_com_thehyperflames_hyperion-api_internal_session.SessionStatus"
+                        }
+                    ]
+                },
+                "tokenLimits": {
+                    "description": "Specific token spending limits",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_thehyperflames_hyperion-api_internal_session.TokenLimit"
+                    }
+                },
+                "unlimitedTokens": {
+                    "description": "If true, session can spend any token",
+                    "type": "boolean"
+                },
+                "user": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "validUntil": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_thehyperflames_hyperion-api_internal_session.SessionStatus": {
+            "type": "string",
+            "enum": [
+                "pending",
+                "confirming",
+                "active",
+                "revoked",
+                "expired",
+                "failed"
+            ],
+            "x-enum-varnames": [
+                "SessionStatusPending",
+                "SessionStatusConfirming",
+                "SessionStatusActive",
+                "SessionStatusRevoked",
+                "SessionStatusExpired",
+                "SessionStatusFailed"
+            ]
+        },
+        "github_com_thehyperflames_hyperion-api_internal_session.TokenLimit": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "description": "Maximum spending amount in smallest units",
+                    "type": "integer"
+                },
+                "decimals": {
+                    "description": "Token decimals for formatting",
+                    "type": "integer"
+                },
+                "mint": {
+                    "description": "Token mint address",
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "spentAmount": {
+                    "description": "Amount accumulated spent so far",
+                    "type": "integer"
+                },
+                "symbol": {
+                    "description": "Token symbol (optional, for display in intent)",
+                    "type": "string"
+                }
+            }
+        },
+        "internal_aggregator_handler.HopInfo": {
+            "type": "object",
+            "properties": {
+                "aToB": {
+                    "type": "boolean"
+                },
+                "amountIn": {
+                    "type": "string"
+                },
+                "amountOut": {
+                    "type": "string"
+                },
+                "feeBps": {
+                    "type": "integer"
+                },
+                "inputMint": {
+                    "type": "string"
+                },
+                "outputMint": {
+                    "type": "string"
+                },
+                "poolAddress": {
+                    "type": "string"
+                },
+                "poolType": {
+                    "type": "string"
+                },
+                "priceImpactBps": {
+                    "type": "integer"
+                }
+            }
+        },
+        "internal_aggregator_handler.MultiHopQuoteResponse": {
+            "type": "object",
+            "properties": {
+                "amountIn": {
+                    "type": "string"
+                },
+                "amountOut": {
+                    "type": "string"
+                },
+                "hopCount": {
+                    "description": "Number of hops in route",
+                    "type": "integer"
+                },
+                "hops": {
+                    "description": "Details for each hop",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/internal_aggregator_handler.HopInfo"
+                    }
+                },
+                "inputMint": {
+                    "type": "string"
+                },
+                "otherAmountThreshold": {
+                    "description": "min output or max input with slippage",
+                    "type": "string"
+                },
+                "outputMint": {
+                    "type": "string"
+                },
+                "priceImpactBps": {
+                    "description": "Maximum price impact across all hops",
+                    "type": "integer"
+                },
+                "priceImpactPercent": {
+                    "description": "Human-readable percentage",
+                    "type": "string"
+                },
+                "priceImpactSeverity": {
+                    "description": "Based on max price impact",
+                    "type": "string"
+                },
+                "priceImpactWarning": {
+                    "description": "User-friendly warning message",
+                    "type": "string"
+                },
+                "route": {
+                    "description": "Token path [inputMint, ..intermediate.., outputMint]",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "routes": {
+                    "description": "Legacy compatibility",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/internal_aggregator_handler.RouteInfo"
+                    }
+                },
+                "totalFeeBps": {
+                    "description": "Approximate total fees",
+                    "type": "integer"
+                }
+            }
+        },
+        "internal_aggregator_handler.PoolDetailResponse": {
+            "type": "object",
+            "properties": {
+                "active": {
+                    "type": "boolean"
+                },
+                "address": {
+                    "type": "string"
+                },
+                "fee_rate_bps": {
+                    "type": "integer"
+                },
+                "last_updated_slot": {
+                    "type": "integer"
+                },
+                "program_id": {
+                    "type": "string"
+                },
+                "reserve_a": {
+                    "type": "string"
+                },
+                "reserve_b": {
+                    "type": "string"
+                },
+                "token_mint_a": {
+                    "type": "string"
+                },
+                "token_mint_b": {
+                    "type": "string"
+                },
+                "token_vault_a": {
+                    "type": "string"
+                },
+                "token_vault_b": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "internal_aggregator_handler.PoolInfo": {
+            "type": "object",
+            "properties": {
+                "active": {
+                    "type": "boolean"
+                },
+                "address": {
+                    "type": "string"
+                },
+                "token_mint_a": {
+                    "type": "string"
+                },
+                "token_mint_b": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "internal_aggregator_handler.PoolListResponse": {
+            "type": "object",
+            "properties": {
+                "limit": {
+                    "type": "integer"
+                },
+                "page": {
+                    "type": "integer"
+                },
+                "pages": {
+                    "type": "integer"
+                },
+                "pools": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/internal_aggregator_handler.PoolInfo"
+                    }
+                },
+                "total": {
+                    "type": "integer"
+                }
+            }
+        },
+        "internal_aggregator_handler.PoolStatsResponse": {
+            "type": "object",
+            "properties": {
+                "pool_count": {
+                    "type": "integer"
+                },
+                "update_count": {
+                    "type": "integer"
+                }
+            }
+        },
+        "internal_aggregator_handler.QuoteResponse": {
+            "type": "object",
+            "properties": {
+                "amountIn": {
+                    "type": "string"
+                },
+                "amountOut": {
+                    "type": "string"
+                },
+                "feeBps": {
+                    "type": "integer"
+                },
+                "inputMint": {
+                    "type": "string"
+                },
+                "otherAmountThreshold": {
+                    "description": "min output (ExactIn) or max input (ExactOut) based on slippage",
+                    "type": "string"
+                },
+                "outputMint": {
+                    "type": "string"
+                },
+                "priceImpactBps": {
+                    "type": "integer"
+                },
+                "priceImpactPercent": {
+                    "description": "Human-readable percentage",
+                    "type": "string"
+                },
+                "priceImpactSeverity": {
+                    "description": "none, low, moderate, high, extreme",
+                    "type": "string"
+                },
+                "priceImpactWarning": {
+                    "description": "User-friendly warning message",
+                    "type": "string"
+                },
+                "routes": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/internal_aggregator_handler.RouteInfo"
+                    }
+                }
+            }
+        },
+        "internal_aggregator_handler.RouteHandlerRequest": {
+            "type": "object",
+            "required": [
+                "amount",
+                "inputMint",
+                "outputMint",
+                "swapMode",
+                "userWallet"
+            ],
+            "properties": {
+                "amount": {
+                    "type": "string"
+                },
+                "inputMint": {
+                    "type": "string"
+                },
+                "outputMint": {
+                    "type": "string"
+                },
+                "slippageBps": {
+                    "description": "optional, default 50bps",
+                    "type": "integer"
+                },
+                "swapMode": {
+                    "description": "ExactIn or ExactOut",
+                    "type": "string"
+                },
+                "userWallet": {
+                    "type": "string"
+                }
+            }
+        },
+        "internal_aggregator_handler.RouteHandlerResponse": {
+            "type": "object",
+            "properties": {
+                "amountIn": {
+                    "type": "string"
+                },
+                "amountOut": {
+                    "type": "string"
+                },
+                "computeUnitsEstimate": {
+                    "type": "integer"
+                },
+                "feeAmount": {
+                    "type": "string"
+                },
+                "hopCount": {
+                    "description": "Number of hops",
+                    "type": "integer"
+                },
+                "lastValidBlockHeight": {
+                    "description": "Blockhash expiry",
+                    "type": "integer"
+                },
+                "maxAmountIn": {
+                    "description": "For ExactOut",
+                    "type": "string"
+                },
+                "minAmountOut": {
+                    "description": "For ExactIn",
+                    "type": "string"
+                },
+                "poolAddress": {
+                    "type": "string"
+                },
+                "pools": {
+                    "description": "Pools used",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "route": {
+                    "description": "Multi-hop specific fields",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "simulation": {
+                    "$ref": "#/definitions/github_com_thehyperflames_hyperion-api_internal_aggregator.SimulationResult"
+                },
+                "transaction": {
+                    "description": "Base64-encoded unsigned transaction",
+                    "type": "string"
+                }
+            }
+        },
+        "internal_aggregator_handler.RouteInfo": {
+            "type": "object",
+            "properties": {
+                "percent": {
+                    "description": "100 for single pool direct swap",
+                    "type": "integer"
+                },
+                "poolAddress": {
+                    "type": "string"
+                },
+                "poolType": {
+                    "type": "string"
+                }
+            }
+        },
+        "internal_aggregator_handler.SwapHandlerRequest": {
+            "type": "object",
+            "required": [
+                "amount",
+                "inputMint",
+                "outputMint",
+                "swapMode",
+                "userWallet"
+            ],
+            "properties": {
+                "amount": {
+                    "type": "string"
+                },
+                "inputMint": {
+                    "type": "string"
+                },
+                "outputMint": {
+                    "type": "string"
+                },
+                "slippageBps": {
+                    "description": "optional, default 50bps",
+                    "type": "integer"
+                },
+                "swapMode": {
+                    "description": "ExactIn or ExactOut",
+                    "type": "string"
+                },
+                "useV2": {
+                    "description": "optional, use SwapV2 for Token-2022",
+                    "type": "boolean"
+                },
+                "userWallet": {
+                    "type": "string"
+                }
+            }
+        },
+        "internal_aggregator_handler.SwapHandlerResponse": {
+            "type": "object",
+            "properties": {
+                "amountIn": {
+                    "type": "string"
+                },
+                "amountOut": {
+                    "type": "string"
+                },
+                "computeUnitsEstimate": {
+                    "type": "integer"
+                },
+                "feeAmount": {
+                    "type": "string"
+                },
+                "lastValidBlockHeight": {
+                    "description": "Blockhash expiry",
+                    "type": "integer"
+                },
+                "maxAmountIn": {
+                    "description": "For ExactOut",
+                    "type": "string"
+                },
+                "minAmountOut": {
+                    "description": "For ExactIn",
+                    "type": "string"
+                },
+                "poolAddress": {
+                    "type": "string"
+                },
+                "simulation": {
+                    "$ref": "#/definitions/github_com_thehyperflames_hyperion-api_internal_aggregator.SimulationResult"
+                },
+                "transaction": {
+                    "description": "Base64-encoded unsigned transaction",
+                    "type": "string"
+                }
+            }
+        },
+        "internal_http_routes.CloseSessionOnChainResponse": {
+            "type": "object",
+            "properties": {
+                "rentRecovered": {
+                    "description": "Whether rent was recovered",
+                    "type": "boolean"
+                },
+                "sessionId": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "transaction": {
+                    "description": "Base64 encoded signed transaction",
+                    "type": "string"
+                },
+                "txSignature": {
+                    "description": "On-chain transaction signature",
+                    "type": "string"
+                }
+            }
+        },
+        "internal_http_routes.ConfirmSessionRequest": {
+            "type": "object",
+            "required": [
+                "sessionId",
+                "signature"
+            ],
+            "properties": {
+                "sessionId": {
+                    "type": "string"
+                },
+                "signature": {
+                    "description": "Base64 encoded Ed25519 signature",
+                    "type": "string"
+                }
+            }
+        },
+        "internal_http_routes.ConfirmSessionResponse": {
+            "type": "object",
+            "properties": {
+                "sessionId": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "transaction": {
+                    "description": "Base64 encoded signed transaction",
+                    "type": "string"
+                },
+                "txSignature": {
+                    "description": "On-chain transaction signature",
+                    "type": "string"
+                }
+            }
+        },
+        "internal_http_routes.CreateSessionRequest": {
+            "type": "object",
+            "required": [
+                "chainId",
+                "domain",
+                "user"
+            ],
+            "properties": {
+                "chainId": {
+                    "description": "Fogo Chain ID (e.g. \"fogo-devnet\")",
+                    "type": "string"
+                },
+                "domain": {
+                    "description": "App domain",
+                    "type": "string"
+                },
+                "durationHours": {
+                    "description": "1h to 1 week",
+                    "type": "integer",
+                    "maximum": 168,
+                    "minimum": 1
+                },
+                "maxAmount": {
+                    "description": "Max spending limit (deprecated, use tokenLimits)",
+                    "type": "integer"
+                },
+                "tokenLimits": {
+                    "description": "Specific token spending limits",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/internal_http_routes.TokenLimitRequest"
+                    }
+                },
+                "unlimitedTokens": {
+                    "description": "If true, can spend any token",
+                    "type": "boolean"
+                },
+                "user": {
+                    "description": "User's wallet address",
+                    "type": "string"
+                }
+            }
+        },
+        "internal_http_routes.CreateSessionResponse": {
+            "type": "object",
+            "properties": {
+                "intentMessage": {
+                    "description": "Message for user to sign",
+                    "type": "string"
+                },
+                "maxAmount": {
+                    "type": "integer"
+                },
+                "sessionId": {
+                    "type": "string"
+                },
+                "sessionPublicKey": {
+                    "type": "string"
+                },
+                "validUntil": {
+                    "type": "integer"
+                }
+            }
+        },
+        "internal_http_routes.LoginRequest": {
+            "type": "object",
+            "required": [
+                "address",
+                "signature"
+            ],
+            "properties": {
+                "address": {
+                    "type": "string"
+                },
+                "ref_code": {
+                    "type": "string"
+                },
+                "signature": {
+                    "type": "string"
+                }
+            }
+        },
+        "internal_http_routes.RevokeSessionOnChainResponse": {
+            "type": "object",
+            "properties": {
+                "sessionId": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "transaction": {
+                    "description": "Base64 encoded signed transaction",
+                    "type": "string"
+                },
+                "txSignature": {
+                    "description": "On-chain transaction signature",
+                    "type": "string"
+                }
+            }
+        },
+        "internal_http_routes.SwapWithSessionRequest": {
+            "type": "object",
+            "required": [
+                "amount",
+                "inputMint",
+                "outputMint",
+                "sessionId",
+                "swapMode",
+                "userWallet"
+            ],
+            "properties": {
+                "amount": {
+                    "$ref": "#/definitions/big.Int"
+                },
+                "inputMint": {
+                    "type": "string"
+                },
+                "outputMint": {
+                    "type": "string"
+                },
+                "sessionId": {
+                    "type": "string"
+                },
+                "slippageBps": {
+                    "type": "integer"
+                },
+                "swapMode": {
+                    "description": "ExactIn or ExactOut",
+                    "type": "string"
+                },
+                "userWallet": {
+                    "type": "string"
+                }
+            }
+        },
+        "internal_http_routes.TokenLimitRequest": {
+            "type": "object",
+            "required": [
+                "amount",
+                "decimals",
+                "mint"
+            ],
+            "properties": {
+                "amount": {
+                    "description": "Maximum spending amount (as string for large numbers)",
+                    "type": "string"
+                },
+                "decimals": {
+                    "description": "Token decimals",
+                    "type": "integer"
+                },
+                "mint": {
+                    "description": "Token mint address (base58)",
+                    "type": "string"
+                },
+                "symbol": {
+                    "description": "Token symbol (optional, for display)",
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,19 @@
+---
+title: "Handling Errors"
+description: "Common error codes and how to fix them."
+---
+
+# Error Handling
+
+## Common Errors
+
+| Code | Error | Description |
+| :--- | :--- | :--- |
+| `6001` | `SlippageExceeded` | The price moved unfavorable during the transaction. |
+| `6006` | `InvalidOwner` | The account owner does not match the expected program. |
+
+## Debugging
+
+If you encounter a generic "Simulation Failed", check:
+1.  Do you have enough SOL for rent?
+2.  Is your Session expired?
